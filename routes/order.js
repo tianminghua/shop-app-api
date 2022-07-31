@@ -16,6 +16,11 @@ router.post('/', verifyToken, async (req, res) => {
 //update Order info
 router.put('/:id', verifyToken, async (req, res) => {
     try {
+        const oldOrder = await Order.findById(req.params.id);
+        if (oldOrder.userId !== req.user.id) {
+            return res.status(403).json('You are not allowed to do that!')
+        }
+
         const updatedOrder = await Order.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
         res.status(200).json(updatedOrder)
     } catch (err) {
@@ -35,8 +40,12 @@ router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
 
 //find Orders by User ID
 router.get('/find/:userId', verifyToken, async (req, res) => {
+    if (req.user.id !== req.params.userId) {
+        return res.status(403).json('You are not allowed to do that!')
+    }
+    console.log(req.user)
     try {
-        const orders = await Order.find({ userId: req.params.userId })
+        const orders = await Order.find({ userId: req.params.userId }).sort({ "createdAt": -1 })
         res.status(200).json(orders)
     } catch (err) {
         res.status(500).json(err)

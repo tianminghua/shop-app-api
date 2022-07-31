@@ -7,6 +7,7 @@ const productRoute = require('./routes/product')
 const cartRoute = require('./routes/cart')
 const orderRoute = require('./routes/order')
 const stripeRoute = require('./routes/stripe')
+const taskRoute = require('./routes/task')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -24,7 +25,8 @@ app.use('/api/product', productRoute)
 app.use('/api/cart', cartRoute)
 app.use('/api/order', orderRoute)
 app.use('/api/checkout', stripeRoute)
+app.use('/api/task', taskRoute)
 
 app.listen(process.env.PORT || 5000, () => {
-    console.log('backend server starts')
+    console.log('backend server starts, hhh')
 })
